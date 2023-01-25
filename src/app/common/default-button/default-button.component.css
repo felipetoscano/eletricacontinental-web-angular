@@ -1,0 +1,6 @@
+button {
+    background-color: var(--orange-web);
+    font-size: 1em;
+    text-transform: uppercase;
+    border-radius: 3px;
+}
