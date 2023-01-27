@@ -1,8 +1,14 @@
-<div class="menu-bar">
-    <button routerLink="/home">Home</button>
-    <button routerLink="/about">Sobre</button>
-    <button routerLink="/contact">Contato</button>
-    <button routerLink="/admin-area">Área do Administrador</button>
-</div>
+<nav mat-tab-nav-bar
+    [backgroundColor]="'primary'"
+    [color]="'primary'">
 
-<router-outlet></router-outlet>
+   <a mat-tab-link
+        *ngFor="let link of navLinks"
+        [routerLink]="link.link"
+        routerLinkActive #rla=routerLinkActive
+        [active]="rla.isActive">{{link.label}}</a>
+</nav>
+
+<div class="div-router">
+    <router-outlet></router-outlet>
+</div>
