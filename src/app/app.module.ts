@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,15 +16,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminAreaComponent } from './pages/admin-area/admin-area.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
@@ -35,10 +36,11 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
     SnackbarComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
     MatTabsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -46,7 +48,6 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
     MatInputModule,
     MatTableModule,
     MatIconModule,
-    BrowserAnimationsModule,
     MatDialogModule,
     MatSnackBarModule
   ],
