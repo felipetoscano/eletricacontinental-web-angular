@@ -17,3 +17,9 @@ html, body {
 body { 
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
+
+.vertical-form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

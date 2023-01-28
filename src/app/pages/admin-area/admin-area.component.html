@@ -8,6 +8,40 @@
 </mat-card>
 <br>
 <mat-card>
+    <mat-card-header>
+        <mat-card-title>{{formAction}} funcionário</mat-card-title>
+    </mat-card-header>
+        <mat-card-content>
+            <div class="vertical-form-field">
+                <mat-form-field>
+                    <mat-label>ID</mat-label>
+                    <input disabled matInput [(ngModel)]="employee.id">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Primeiro Nome</mat-label>
+                    <input matInput [(ngModel)]="employee.firstName">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Último Nome</mat-label>
+                    <input matInput [(ngModel)]="employee.lastName">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Celular</mat-label>
+                    <input matInput [(ngModel)]="employee.cellphone">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>E-mail</mat-label>
+                    <input matInput [(ngModel)]="employee.email">
+                </mat-form-field>
+                <button mat-raised-button color="accent" (click)="performFormAction()">{{formAction}}</button>
+            </div>
+        </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Funcionários</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
         <table mat-table [dataSource]="employees">
             <ng-container matColumnDef="id">
@@ -29,6 +63,22 @@
             <ng-container matColumnDef="email">
                 <th mat-header-cell *matHeaderCellDef>E-mail</th>
                 <td mat-cell *matCellDef="let element">{{element.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="Editar item" (click)="prepareFormForUpdate(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="Excluir item" (click)="deleteEmployee(element.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -10,16 +10,57 @@ import { EmployeeService } from 'src/app/services/employee-service';
 
 export class AdminAreaComponent {
 
-  employees: EmployeeModel[] = [];
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'cellphone', 'email']
+  employees: EmployeeModel[];
+  employee: EmployeeModel;
+
+  displayedColumns: String[] = ['id', 'firstName', 'lastName', 'cellphone', 'email', 'edit', 'delete']
+
+  formAction: String;
 
   constructor(private employeeService: EmployeeService) {
+    this.employees = [];
+    this.employee = new EmployeeModel();
+    this.formAction = "Cadastrar";
     this.getEmployees();
   }
   
-  getEmployees() {
-    this.employeeService.getEmployees().subscribe(res => {
+  getEmployees() : void {
+    this.employeeService.getAll().subscribe(res => {
       this.employees = res;
     });
+  }
+
+  createEmployee() : void {
+    this.employeeService.create(this.employee).subscribe(res => {
+      this.getEmployees();
+    });
+  }
+
+  updateEmployee() : void {
+    this.employeeService.update(this.employee.id as number, this.employee).subscribe(res => {
+      this.getEmployees();
+    });
+  }
+
+  deleteEmployee(id: number) : void {
+    this.employeeService.delete(id).subscribe(res => {
+      this.getEmployees();
+    })
+  }
+
+  prepareFormForUpdate(employee: EmployeeModel) : void {
+    this.employee = employee;
+    this.formAction = "Editar";
+  }
+
+  performFormAction() : void {
+    if(this.formAction === 'Cadastrar'){
+      this.createEmployee();
+    }
+    else{
+      this.updateEmployee();
+      this.formAction = "Cadastrar";
+    }
+    this.employee = new EmployeeModel();
   }
 }
