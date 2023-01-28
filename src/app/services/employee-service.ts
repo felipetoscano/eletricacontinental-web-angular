@@ -9,7 +9,7 @@ import { EmployeeModel } from '../models/employee-model';
 
 export class EmployeeService {
 
-  baseUrl: string = "http://localhost:8080/api/customers";
+  baseUrl: string = "http://ec2-54-175-205-144.compute-1.amazonaws.com:8080/api/customers";
 
   constructor(private http: HttpClient) { }
 
