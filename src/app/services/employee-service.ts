@@ -23,11 +23,7 @@ export class EmployeeService {
   }
 
   create(employee: EmployeeModel) : Observable<any> {
-    return this.http.post<any>(this.baseUrl, employee, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+    return this.http.post<any>(this.baseUrl, employee);
   }
 
   update(id: number, employee: EmployeeModel) : Observable<any> {

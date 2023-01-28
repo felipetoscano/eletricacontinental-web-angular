@@ -1,6 +1,15 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from 'src/app/components/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarComponent } from 'src/app/components/snackbar/snackbar.component';
 import { EmployeeModel } from 'src/app/models/employee-model';
 import { EmployeeService } from 'src/app/services/employee-service';
+
+export enum FORM_ACTIONS {
+  CREATE = "Cadastrar",
+  EDIT = "Editar"
+}
 
 @Component({
   selector: 'app-admin-area',
@@ -8,19 +17,20 @@ import { EmployeeService } from 'src/app/services/employee-service';
   styleUrls: ['./admin-area.component.css']
 })
 
+//TODO: CRIAR ARQUIVO DE MENSAGENS
+//TODO: CRIAR ARQUIVO .ENV
 export class AdminAreaComponent {
 
   employees: EmployeeModel[];
   employee: EmployeeModel;
-
-  displayedColumns: String[] = ['id', 'firstName', 'lastName', 'cellphone', 'email', 'edit', 'delete']
-
+  displayedColumns: String[]; 
   formAction: String;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.employees = [];
     this.employee = new EmployeeModel();
-    this.formAction = "Cadastrar";
+    this.displayedColumns = ['id', 'firstName', 'lastName', 'cellphone', 'email', 'edit', 'delete'];
+    this.formAction = FORM_ACTIONS.CREATE;
     this.getEmployees();
   }
   
@@ -31,36 +41,64 @@ export class AdminAreaComponent {
   }
 
   createEmployee() : void {
-    this.employeeService.create(this.employee).subscribe(res => {
+    this.employeeService.create(this.employee).subscribe(_ => {
       this.getEmployees();
+      this.showSnackBar("Cadastrado com sucesso!");
     });
   }
 
+  prepareFormForUpdate(employee: EmployeeModel) : void {
+    this.employee = structuredClone(employee);
+    this.formAction = FORM_ACTIONS.EDIT;
+  }
+
   updateEmployee() : void {
-    this.employeeService.update(this.employee.id as number, this.employee).subscribe(res => {
+    this.employeeService.update(this.employee.id as number, this.employee).subscribe(_ => {
       this.getEmployees();
+      this.showSnackBar("Editado com sucesso!");
     });
   }
 
   deleteEmployee(id: number) : void {
-    this.employeeService.delete(id).subscribe(res => {
+    this.employeeService.delete(id).subscribe(_ => {
       this.getEmployees();
+      this.showSnackBar("Deletado com sucesso!");
     })
   }
 
-  prepareFormForUpdate(employee: EmployeeModel) : void {
-    this.employee = employee;
-    this.formAction = "Editar";
+  openDeleteDialog(id: number): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      data: { 
+        title: "Deletar funcionário " + id + '?',
+        content: "Essa ação não poderá ser desfeita",
+        positiveAction: () => { this.deleteEmployee(id) },
+        negativeAction: () => { }
+      }
+    });
   }
 
   performFormAction() : void {
-    if(this.formAction === 'Cadastrar'){
+    if(this.formAction === FORM_ACTIONS.CREATE){
       this.createEmployee();
     }
     else{
       this.updateEmployee();
-      this.formAction = "Cadastrar";
+      this.formAction = FORM_ACTIONS.CREATE;
     }
+    this.cleanForm();
+  }
+
+  cleanForm() : void {
     this.employee = new EmployeeModel();
+    this.formAction = FORM_ACTIONS.CREATE;
+  }
+
+  showSnackBar(text: String): void {
+    this.snackBar.openFromComponent(SnackbarComponent, {
+      duration: 2 * 1000,
+      data: {
+        text: text
+      }
+    });
   }
 }

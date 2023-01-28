@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +20,8 @@ import { AdminAreaComponent } from './pages/admin-area/admin-area.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,9 @@ import { FormsModule } from '@angular/forms';
     AboutComponent,
     ContactComponent,
     LoginComponent,
-    AdminAreaComponent
+    AdminAreaComponent,
+    ConfirmationDialogComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +46,9 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatTableModule,
     MatIconModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

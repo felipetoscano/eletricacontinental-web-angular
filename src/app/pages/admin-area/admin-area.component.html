@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>Área do adminstrador</mat-card-title>
+        <mat-card-title>Área do administrador</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         Em construção
@@ -12,6 +12,7 @@
         <mat-card-title>{{formAction}} funcionário</mat-card-title>
     </mat-card-header>
         <mat-card-content>
+            <br>
             <div class="vertical-form-field">
                 <mat-form-field>
                     <mat-label>ID</mat-label>
@@ -33,9 +34,12 @@
                     <mat-label>E-mail</mat-label>
                     <input matInput [(ngModel)]="employee.email">
                 </mat-form-field>
-                <button mat-raised-button color="accent" (click)="performFormAction()">{{formAction}}</button>
             </div>
         </mat-card-content>
+        <mat-card-actions>
+            <button class="action-form-button" mat-raised-button color="accent" (click)="performFormAction()">{{formAction}}</button>
+            <button class="action-form-button" mat-stroked-button color="accent" (click)="cleanForm()">Limpar</button>
+        </mat-card-actions>
 </mat-card>
 <br>
 <mat-card>
@@ -75,7 +79,7 @@
             <ng-container matColumnDef="delete">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button aria-label="Excluir item" (click)="deleteEmployee(element.id)">
+                    <button mat-icon-button aria-label="Excluir item" (click)="openDeleteDialog(element.id)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>
