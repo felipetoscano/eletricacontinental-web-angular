@@ -19,7 +19,7 @@ export enum FORM_ACTIONS {
   styleUrls: ['./admin-area.component.css']
 })
 
-//TODO: CRIAR ARQUIVO .ENV
+
 export class AdminAreaComponent {
 
   employees: EmployeeModel[];
