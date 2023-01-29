@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { EmployeeModel } from '../models/employee-model';
 
 @Injectable({
@@ -9,28 +10,25 @@ import { EmployeeModel } from '../models/employee-model';
 
 export class EmployeeService {
 
-  //TODO: MANTER EM UM ARQUIVO SEPARADO
-  private baseUrl: string = "http://ec2-54-175-205-144.compute-1.amazonaws.com:8080/api/customers";
-
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<EmployeeModel[]> {
-    return this.http.get<EmployeeModel[]>(this.baseUrl);
+    return this.http.get<EmployeeModel[]>(environment.apiUrlBase);
   }
 
   getById(id: number) : Observable<EmployeeModel> {
-    return this.http.get<EmployeeModel>(this.baseUrl + '/' + id);
+    return this.http.get<EmployeeModel>(environment.apiUrlBase + '/' + id);
   }
 
   create(employee: EmployeeModel) : Observable<any> {
-    return this.http.post<any>(this.baseUrl, employee);
+    return this.http.post<any>(environment.apiUrlBase, employee);
   }
 
   update(id: number, employee: EmployeeModel) : Observable<any> {
-    return this.http.put<any>(this.baseUrl + '/' + id, employee);
+    return this.http.put<any>(environment.apiUrlBase + '/' + id, employee);
   }
 
   delete(id: number) : Observable<any> {
-    return this.http.delete<any>(this.baseUrl + '/' + id);
+    return this.http.delete<any>(environment.apiUrlBase + '/' + id);
   }
 }

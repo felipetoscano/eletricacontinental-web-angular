@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
 
 export class AppComponent {
 
-    navLinks: any[];
+    navigationLinks: any[];
     activeLinkIndex = -1;
 
     constructor(private router: Router) {
-      this.navLinks = [
+      this.navigationLinks = [
         {
             label: 'Home',
             link: './home',
@@ -38,8 +38,8 @@ export class AppComponent {
   }
   
   ngOnInit(): void {
-    this.router.events.subscribe((res) => {
-        this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
+    this.router.events.subscribe((_) => {
+        this.activeLinkIndex = this.navigationLinks.indexOf(this.navigationLinks.find(tab => tab.link === '.' + this.router.url));
     });
   }
 }

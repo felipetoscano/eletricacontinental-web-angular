@@ -5,6 +5,8 @@ import { ConfirmationDialogComponent } from 'src/app/components/confirmation-dia
 import { SnackbarComponent } from 'src/app/components/snackbar/snackbar.component';
 import { EmployeeModel } from 'src/app/models/employee-model';
 import { EmployeeService } from 'src/app/services/employee-service';
+import { StringFormat } from 'src/app/utils/StringFormat';
+import { Messages } from 'src/messages';
 
 export enum FORM_ACTIONS {
   CREATE = "Cadastrar",
@@ -17,7 +19,6 @@ export enum FORM_ACTIONS {
   styleUrls: ['./admin-area.component.css']
 })
 
-//TODO: CRIAR ARQUIVO DE MENSAGENS
 //TODO: CRIAR ARQUIVO .ENV
 export class AdminAreaComponent {
 
@@ -43,7 +44,7 @@ export class AdminAreaComponent {
   createEmployee() : void {
     this.employeeService.create(this.employee).subscribe(_ => {
       this.getEmployees();
-      this.showSnackBar("Cadastrado com sucesso!");
+      this.showSnackBar(Messages.createdSuccessfully);
     });
   }
 
@@ -55,22 +56,22 @@ export class AdminAreaComponent {
   updateEmployee() : void {
     this.employeeService.update(this.employee.id as number, this.employee).subscribe(_ => {
       this.getEmployees();
-      this.showSnackBar("Editado com sucesso!");
+      this.showSnackBar(Messages.updatedSuccessfully);
     });
   }
 
   deleteEmployee(id: number) : void {
     this.employeeService.delete(id).subscribe(_ => {
       this.getEmployees();
-      this.showSnackBar("Deletado com sucesso!");
+      this.showSnackBar(Messages.deletedSuccessfully);
     })
   }
 
   openDeleteDialog(id: number): void {
     this.dialog.open(ConfirmationDialogComponent, {
       data: { 
-        title: "Deletar funcionário " + id + '?',
-        content: "Essa ação não poderá ser desfeita",
+        title: StringFormat(Messages.warningDeleteEmployee, id.toString()),
+        content: Messages.warningThisActionCannotBeUndone,
         positiveAction: () => { this.deleteEmployee(id) },
         negativeAction: () => { }
       }
