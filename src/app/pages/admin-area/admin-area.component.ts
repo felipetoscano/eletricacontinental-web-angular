@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from 'src/app/components/confirmation-dialog/confirmation-dialog.component';
@@ -26,6 +28,14 @@ export class AdminAreaComponent {
   employee: EmployeeModel;
   displayedColumns: String[]; 
   formAction: String;
+  form = new FormGroup({
+    id: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    cellphone: new FormControl(''),
+    email: new FormControl('')
+  })
+  saving: Boolean;
 
   constructor(private employeeService: EmployeeService, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.employees = [];
@@ -33,6 +43,8 @@ export class AdminAreaComponent {
     this.displayedColumns = ['id', 'firstName', 'lastName', 'cellphone', 'email', 'edit', 'delete'];
     this.formAction = FORM_ACTIONS.CREATE;
     this.getEmployees();
+    this.form.controls.id.disable();
+    this.saving = false;
   }
   
   getEmployees() : void {
@@ -42,9 +54,14 @@ export class AdminAreaComponent {
   }
 
   createEmployee() : void {
-    this.employeeService.create(this.employee).subscribe(_ => {
-      this.getEmployees();
-      this.showSnackBar(Messages.createdSuccessfully);
+    this.saving = true;
+    this.employeeService.create(this.employee).subscribe({
+      complete: () => {
+        this.getEmployees();
+        this.showSnackBar(Messages.createdSuccessfully);
+        this.saving = false;
+      },
+      error: (err) => this.handleFormControlErrors(err)
     });
   }
 
@@ -54,9 +71,14 @@ export class AdminAreaComponent {
   }
 
   updateEmployee() : void {
-    this.employeeService.update(this.employee.id as number, this.employee).subscribe(_ => {
-      this.getEmployees();
-      this.showSnackBar(Messages.updatedSuccessfully);
+    this.saving = true;
+    this.employeeService.update(this.employee.id as number, this.employee).subscribe({
+      complete: () => {
+        this.getEmployees();
+        this.showSnackBar(Messages.updatedSuccessfully);
+        this.saving = false;
+      },
+      error: (err) => this.handleFormControlErrors(err)
     });
   }
 
@@ -92,6 +114,7 @@ export class AdminAreaComponent {
   cleanForm() : void {
     this.employee = new EmployeeModel();
     this.formAction = FORM_ACTIONS.CREATE;
+    this.form.reset();
   }
 
   showSnackBar(text: String): void {
@@ -101,5 +124,26 @@ export class AdminAreaComponent {
         text: text
       }
     });
+  }
+
+  getError(formControlName: string) : String {
+    return this.form.get(formControlName)?.errors?.['serverError'];
+  }
+
+  handleFormControlErrors(err: any) : void {
+    this.saving = false;
+    if(err instanceof HttpErrorResponse){
+      if(err.status === 400){
+        const errorMessages = err.error.errorDetail;
+        Object.keys(errorMessages).forEach(prop => {
+          const formControl = this.form.get(prop);
+          if(formControl){
+            formControl.setErrors({
+              serverError: errorMessages[prop]
+            });
+          }
+        })
+      }
+    }
   }
 }
