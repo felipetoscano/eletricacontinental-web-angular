@@ -1,4 +1,4 @@
-export class EmployeeModel {
+export class CustomerModel {
     id?: number;
     firstName: String;
     lastName: String;

@@ -3,5 +3,5 @@ export const Messages = {
     updatedSuccessfully: "Editado com sucesso!",
     deletedSuccessfully: "Deletado com sucesso!",
     warningThisActionCannotBeUndone: "Esta ação não poderá ser desfeita",
-    warningDeleteEmployee: "Deseja deletar o funcionário {0}?"
+    warningDeleteCustomer: "Deseja deletar o cliente {0}?"
 }

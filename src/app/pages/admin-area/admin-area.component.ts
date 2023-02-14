@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from 'src/app/components/confirmation-dialog/confirmation-dialog.component';
 import { SnackbarComponent } from 'src/app/components/snackbar/snackbar.component';
-import { EmployeeModel } from 'src/app/models/employee-model';
-import { EmployeeService } from 'src/app/services/employee-service';
+import { CustomerModel } from 'src/app/models/customer-model';
+import { CustomerService } from 'src/app/services/customer-service';
 import { StringFormat } from 'src/app/utils/StringFormat';
 import { Messages } from 'src/messages';
 
@@ -24,8 +24,8 @@ export enum FORM_ACTIONS {
 
 export class AdminAreaComponent {
 
-  employees: EmployeeModel[];
-  employee: EmployeeModel;
+  customers: CustomerModel[];
+  customer: CustomerModel;
   displayedColumns: String[]; 
   formAction: String;
   form = new FormGroup({
@@ -37,27 +37,27 @@ export class AdminAreaComponent {
   })
   saving: Boolean;
 
-  constructor(private employeeService: EmployeeService, private dialog: MatDialog, private snackBar: MatSnackBar) {
-    this.employees = [];
-    this.employee = new EmployeeModel();
+  constructor(private customerService: CustomerService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+    this.customers = [];
+    this.customer = new CustomerModel();
     this.displayedColumns = ['id', 'firstName', 'lastName', 'cellphone', 'email', 'edit', 'delete'];
     this.formAction = FORM_ACTIONS.CREATE;
-    this.getEmployees();
+    this.getCustomers();
     this.form.controls.id.disable();
     this.saving = false;
   }
   
-  getEmployees() : void {
-    this.employeeService.getAll().subscribe(res => {
-      this.employees = res;
+  getCustomers() : void {
+    this.customerService.getAll().subscribe(res => {
+      this.customers = res;
     });
   }
 
-  createEmployee() : void {
+  createCustomer() : void {
     this.saving = true;
-    this.employeeService.create(this.employee).subscribe({
+    this.customerService.create(this.customer).subscribe({
       complete: () => {
-        this.getEmployees();
+        this.getCustomers();
         this.showSnackBar(Messages.createdSuccessfully);
         this.saving = false;
       },
@@ -65,16 +65,16 @@ export class AdminAreaComponent {
     });
   }
 
-  prepareFormForUpdate(employee: EmployeeModel) : void {
-    this.employee = structuredClone(employee);
+  prepareFormForUpdate(customer: CustomerModel) : void {
+    this.customer = structuredClone(customer);
     this.formAction = FORM_ACTIONS.EDIT;
   }
 
-  updateEmployee() : void {
+  updateCustomer() : void {
     this.saving = true;
-    this.employeeService.update(this.employee.id as number, this.employee).subscribe({
+    this.customerService.update(this.customer.id as number, this.customer).subscribe({
       complete: () => {
-        this.getEmployees();
+        this.getCustomers();
         this.showSnackBar(Messages.updatedSuccessfully);
         this.saving = false;
       },
@@ -82,9 +82,9 @@ export class AdminAreaComponent {
     });
   }
 
-  deleteEmployee(id: number) : void {
-    this.employeeService.delete(id).subscribe(_ => {
-      this.getEmployees();
+  deleteCustomer(id: number) : void {
+    this.customerService.delete(id).subscribe(_ => {
+      this.getCustomers();
       this.showSnackBar(Messages.deletedSuccessfully);
     })
   }
@@ -92,9 +92,9 @@ export class AdminAreaComponent {
   openDeleteDialog(id: number): void {
     this.dialog.open(ConfirmationDialogComponent, {
       data: { 
-        title: StringFormat(Messages.warningDeleteEmployee, id.toString()),
+        title: StringFormat(Messages.warningDeleteCustomer, id.toString()),
         content: Messages.warningThisActionCannotBeUndone,
-        positiveAction: () => { this.deleteEmployee(id) },
+        positiveAction: () => { this.deleteCustomer(id) },
         negativeAction: () => { }
       }
     });
@@ -102,17 +102,17 @@ export class AdminAreaComponent {
 
   performFormAction() : void {
     if(this.formAction === FORM_ACTIONS.CREATE){
-      this.createEmployee();
+      this.createCustomer();
     }
     else{
-      this.updateEmployee();
+      this.updateCustomer();
       this.formAction = FORM_ACTIONS.CREATE;
     }
     this.cleanForm();
   }
 
   cleanForm() : void {
-    this.employee = new EmployeeModel();
+    this.customer = new CustomerModel();
     this.formAction = FORM_ACTIONS.CREATE;
     this.form.reset();
   }

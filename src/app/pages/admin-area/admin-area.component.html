@@ -9,7 +9,7 @@
 <br>
 <mat-card>
     <mat-card-header>
-        <mat-card-title>{{formAction}} funcionário</mat-card-title>
+        <mat-card-title>{{formAction}} Cliente</mat-card-title>
     </mat-card-header>
         <mat-card-content>
             <br>
@@ -17,26 +17,26 @@
                     <div class="vertical-items">
                         <mat-form-field>
                             <mat-label>ID</mat-label>
-                            <input matInput [(ngModel)]="employee.id" formControlName="id">
+                            <input matInput [(ngModel)]="customer.id" formControlName="id">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Primeiro Nome</mat-label>
-                            <input matInput [(ngModel)]="employee.firstName" formControlName="firstName">
+                            <input matInput [(ngModel)]="customer.firstName" formControlName="firstName">
                             <mat-error *ngIf="getError('firstName')">{{ getError('firstName') }}</mat-error>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Último Nome</mat-label>
-                            <input matInput [(ngModel)]="employee.lastName" formControlName="lastName">
+                            <input matInput [(ngModel)]="customer.lastName" formControlName="lastName">
                             <mat-error *ngIf="getError('lastName')">{{ getError('lastName') }}</mat-error>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Celular</mat-label>
-                            <input matInput [(ngModel)]="employee.cellphone" formControlName="cellphone">
+                            <input matInput [(ngModel)]="customer.cellphone" formControlName="cellphone">
                             <mat-error *ngIf="getError('cellphone')">{{ getError('cellphone') }}</mat-error>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>E-mail</mat-label>
-                            <input matInput [(ngModel)]="employee.email" formControlName="email">
+                            <input matInput [(ngModel)]="customer.email" formControlName="email">
                             <mat-error *ngIf="getError('email')">{{ getError('email') }}</mat-error>
                         </mat-form-field>
                     </div>
@@ -48,10 +48,10 @@
 <br>
 <mat-card>
     <mat-card-header>
-        <mat-card-title>Funcionários</mat-card-title>
+        <mat-card-title>Clientes</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <table mat-table [dataSource]="employees">
+        <table mat-table [dataSource]="customers">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef>ID</th>
                 <td mat-cell *matCellDef="let element">{{element.id}}</td>
